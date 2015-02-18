@@ -237,7 +237,6 @@ def main(key_file_name, answers_file_name, title="Graded Exam",
     student_output_text = {}
 
     for student in students:
-        print(student['name'])
         student_output =  "{}\n".format(student['name'])
         student_output += "Form: {}\n".format(student['form'] + 1)
         student_output += "Question  Response  Score\n"
