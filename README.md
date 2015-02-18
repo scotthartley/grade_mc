@@ -1,6 +1,6 @@
 # grade_mc: A partial-credit multiple-choice grader in Python
 
-grade_mc is a simple Python 3 script for processing the output of machine-graded multiple choice exams. It allows per-item point values, enabling partial credit for some answers. It can handle multiple, scrambled forms.
+grade_mc is a simple Python 3 script for processing the output of machine-graded multiple choice exams. It allows per-item point values, enabling partial credit for some answers. It can handle multiple, scrambled forms, and it can optionally output individualized student output for printing.
 
 The purpose and usage of the script has been discussed in a short series of [blog posts](http://blog.hartleygroup.org/2014/12/05/a-python-script-for-grading-partial-credit-multiple-choice-part-1/).
 
