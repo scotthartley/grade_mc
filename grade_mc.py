@@ -238,9 +238,10 @@ def main(key_file_name, answers_file_name, title="Graded Exam",
 
     for student in students:
         student_output =  "{}\n".format(student['name'])
+        student_output += "{}\n".format(title)
         student_output += "Form: {}\n".format(student['form'] + 1)
-        student_output += "Question  Response  Score\n"
-        student_output += "========  ========  =====\n"
+        student_output += "Question  Response  Score  |  Question  Response  Score\n"
+        student_output += "========  ========  =====  |  ========  ========  =====\n"
 
         # Question output stored in a list that can be sorted later.
         # Necessary otherwise descrambling leaves the questions in the
@@ -249,17 +250,24 @@ def main(key_file_name, answers_file_name, title="Graded Exam",
         for n in range(num_questions):
             if 1 in student['responses'][n]:
                 question_output.append("   {:2.0f}"\
-                    "         {}      {:1.2f}\n".format(
+                    "         {}      {:1.2f}".format(
                     scramble[student['form']][n],
                     convert_response_to_letter(student['responses'][n]), 
                     ans_key[n][student['responses'][n].tolist().index(1)]))
             else:
                 question_output.append("   {:2.0f}"\
-                    "       {}    {:1.2f}\n".format(
+                    "       {}    {:1.2f}".format(
                     scramble[student['form']][n], "Blank", 0))
 
-        for q in sorted(question_output):
-            student_output += q
+        question_output = sorted(question_output)
+
+        # Print in 2 columns.
+        for n in range(num_questions//2 + num_questions%2):
+            if n+num_questions//2 <= len(question_output):
+                student_output += "{}  |  {}\n".format(
+                    question_output[n], question_output[n+num_questions//2])
+            else: # if odd number of questions
+                student_output += "{}\n".format(question_output[n])
 
         student_output += "\nTotal: {} / {}".format(
                           student['score'], max_score)
@@ -291,6 +299,6 @@ if __name__ == '__main__':
         for s in sorted(student_output):
             with open("{}_out.txt".format(s), 'w') as output_file:
                 output_file.write(student_output[s])
-    else:
-        for s in sorted(student_output):
-            print(student_output[s])
+    # else:
+    #     for s in sorted(student_output):
+    #         print(student_output[s])
