@@ -117,10 +117,12 @@ def main(key_file_name, answers_file_name, title="Graded Exam",
 
     # Load and process the scramble file, if available. Transposes so
     # that scramble[0] returns an array of questions for form 1,
-    # scramble[2] returns array of questions for form 2, etc.
+    # scramble[1] returns array of questions for form 2, etc.
     if scramble_file_name:
         with open(scramble_file_name) as scramble_file:
             scramble = np.loadtxt(scramble_file).transpose()
+    else:
+        scramble = np.array([range(1,num_questions+1) for n in range(4)])
 
     # Load the student info. Characters 0-7 in the input file are the
     # student's uniqueID. Character 9 is the form number. Characters
