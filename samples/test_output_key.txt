@@ -1,5 +1,5 @@
-MC GRADER TEST RESULTS
-======================
+Test - With Key
+===============
 
    Overall average: 52.55 out of 80.00 points (65.69%)
 Standard deviation: 12.53
@@ -112,7 +112,6 @@ Average Scores by Question
 
 Student Scores
 --------------
-00000000	80.0
 adpxnkvx	42.0
 aeaekfhv	60.0
 apqaagpo	46.0

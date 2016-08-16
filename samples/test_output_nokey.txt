@@ -1,0 +1,244 @@
+Test - Without Key
+==================
+
+   Overall average: 52.55 out of 80.00 points (65.69%)
+Standard deviation: 12.53
+              High: 80.0
+               Low: 20.0
+
+Average Scores by Question
+--------------------------
+
+  1: 1.51         Key:     -       -      4.0      -       -   
+            Frequency:   37.7    10.0    37.7     6.9     6.9   (%)
+              Top 27%:   20.0     8.6    65.7     2.9     2.9   
+              Bot 27%:   45.7     2.9    20.0    14.3    14.3   
+
+  2: 2.49         Key:     -      4.0      -       -       -   
+            Frequency:    9.2    62.3    18.5    10.0     0.0   (%)
+              Top 27%:    0.0    91.4     5.7     2.9     0.0   
+              Bot 27%:   17.1    34.3    28.6    20.0     0.0   
+
+  3: 2.71         Key:    4.0      -       -      2.0      -   
+            Frequency:   50.0     0.0     6.9    35.4     7.7   (%)
+              Top 27%:   74.3     0.0     2.9    22.9     0.0   
+              Bot 27%:   28.6     0.0    14.3    42.9    14.3   
+
+  4: 3.09         Key:     -      2.0     4.0     2.0      -   
+            Frequency:    3.8    21.5    60.0    13.1     1.5   (%)
+              Top 27%:    0.0     8.6    82.9     8.6     0.0   
+              Bot 27%:    8.6    40.0    37.1    11.4     2.9   
+
+  5: 2.22         Key:    4.0      -       -       -       -   
+            Frequency:   55.4     2.3    19.2     8.5    14.6   (%)
+              Top 27%:   80.0     0.0     2.9     8.6     8.6   
+              Bot 27%:   40.0     2.9    28.6    14.3    14.3   
+
+  6: 3.63         Key:     -       -       -      4.0      -   
+            Frequency:    2.3     0.0     1.5    90.8     5.4   (%)
+              Top 27%:    0.0     0.0     0.0   100.0     0.0   
+              Bot 27%:    5.7     0.0     2.9    74.3    17.1   
+
+  7: 3.40         Key:     -      2.0      -      4.0      -   
+            Frequency:    0.0    16.2     1.5    76.9     5.4   (%)
+              Top 27%:    0.0     2.9     0.0    97.1     0.0   
+              Bot 27%:    0.0    25.7     2.9    57.1    14.3   
+
+  8: 3.05         Key:     -      4.0      -       -       -   
+            Frequency:    4.6    76.2     2.3    11.5     5.4   (%)
+              Top 27%:    0.0    91.4     0.0     8.6     0.0   
+              Bot 27%:   14.3    48.6     2.9    20.0    14.3   
+
+  9: 3.46         Key:     -       -      2.0     4.0      -   
+            Frequency:    0.8     1.5    19.2    76.9     1.5   (%)
+              Top 27%:    0.0     0.0     5.7    94.3     0.0   
+              Bot 27%:    2.9     5.7    42.9    42.9     5.7   
+
+ 10: 2.58         Key:     -       -      4.0      -       -   
+            Frequency:   15.4     4.6    64.6     2.3    13.1   (%)
+              Top 27%:    0.0     0.0    97.1     0.0     2.9   
+              Bot 27%:   31.4    14.3    20.0     5.7    28.6   
+
+ 11: 1.65         Key:     -       -       -      4.0     2.0  
+            Frequency:    9.2    28.5     5.4    25.4    31.5   (%)
+              Top 27%:    5.7     8.6     5.7    45.7    34.3   
+              Bot 27%:    5.7    51.4     2.9    11.4    28.6   
+
+ 12: 2.52         Key:     -      4.0      -       -       -   
+            Frequency:    3.8    63.1     6.2    17.7     9.2   (%)
+              Top 27%:    0.0    85.7     0.0     8.6     5.7   
+              Bot 27%:    8.6    37.1    11.4    28.6    14.3   
+
+ 13: 2.92         Key:    4.0     2.0      -       -      2.0  
+            Frequency:   56.9     8.5     0.8    10.0    23.8   (%)
+              Top 27%:   82.9     8.6     0.0     2.9     5.7   
+              Bot 27%:   34.3     8.6     2.9    17.1    37.1   
+
+ 14: 1.66         Key:     -       -       -      4.0      -   
+            Frequency:    3.1     0.8     2.3    41.5    52.3   (%)
+              Top 27%:    0.0     0.0     0.0    57.1    42.9   
+              Bot 27%:    8.6     2.9     5.7    28.6    54.3   
+
+ 15: 2.00         Key:     -       -       -      4.0     2.0  
+            Frequency:    5.4     6.9    12.3    24.6    50.8   (%)
+              Top 27%:    5.7     5.7     2.9    51.4    34.3   
+              Bot 27%:    5.7     8.6    20.0    11.4    54.3   
+
+ 16: 2.18         Key:     -       -       -       -      4.0  
+            Frequency:    3.8     7.7    10.8    23.1    54.6   (%)
+              Top 27%:    0.0     2.9     8.6     8.6    80.0   
+              Bot 27%:    2.9    20.0    14.3    20.0    42.9   
+
+ 17: 2.17         Key:     -       -      2.0     4.0      -   
+            Frequency:   11.5    18.5    25.4    41.5     3.1   (%)
+              Top 27%:    0.0     8.6    22.9    68.6     0.0   
+              Bot 27%:   31.4    22.9    20.0    22.9     2.9   
+
+ 18: 3.23         Key:     -      4.0      -       -       -   
+            Frequency:    9.2    80.8     3.1     5.4     1.5   (%)
+              Top 27%:    0.0    97.1     0.0     2.9     0.0   
+              Bot 27%:   20.0    54.3    11.4     8.6     5.7   
+
+ 19: 3.75         Key:     -       -       -       -      4.0  
+            Frequency:    0.0     3.1     2.3     0.8    93.8   (%)
+              Top 27%:    0.0     0.0     0.0     0.0   100.0   
+              Bot 27%:    0.0     8.6     8.6     2.9    80.0   
+
+ 20: 2.32         Key:    2.0      -      2.0      -      4.0  
+            Frequency:   20.8    15.4    26.2     3.1    34.6   (%)
+              Top 27%:    5.7     5.7    22.9     0.0    65.7   
+              Bot 27%:   37.1    28.6    11.4     8.6    14.3   
+
+
+Student Scores
+--------------
+adpxnkvx	42.0
+aeaekfhv	60.0
+apqaagpo	46.0
+aqnioyxy	24.0
+batmtdas	56.0
+bmehvlxa	42.0
+bxhjvmcr	50.0
+cduorntq	36.0
+ceidimzy	54.0
+cxoylump	52.0
+dhjfifud	46.0
+dllsvqcm	58.0
+dmmrkbej	66.0
+dqnjxbgm	58.0
+dvecimys	34.0
+dxkgebnv	50.0
+dynbymnw	34.0
+dzitevrm	56.0
+eelpxzny	48.0
+efwhfnum	70.0
+ejyjcswm	30.0
+eknssxrh	76.0
+erulgwoo	80.0
+etcumdqw	56.0
+eyufsoog	48.0
+ezdzrnfy	48.0
+fcyuidym	62.0
+fkjsddbg	58.0
+fmdgxbdu	60.0
+fnxyftl 	58.0
+fomatlze	48.0
+gdpktuqc	74.0
+gfupxlsg	52.0
+gkozsfkm	74.0
+gneuwerh	68.0
+gnipqtdp	56.0
+gumeyakx	44.0
+gygbxvuw	54.0
+hnnlpnyl	52.0
+hpctquvi	54.0
+hqemklup	54.0
+httlgxvk	54.0
+hwocgmly	28.0
+iglhsjgr	32.0
+ilwuzjtu	50.0
+ipwtmpji	54.0
+isgxrgmp	42.0
+itpjosyx	48.0
+jawauhrh	56.0
+jftkgngh	44.0
+jtsawswp	58.0
+jxodoouo	42.0
+kcqggcur	46.0
+klaedmed	72.0
+lcfuvnhs	48.0
+ljguefyo	40.0
+lwtkdqew	60.0
+lzkpsdqh	42.0
+mauvifbt	52.0
+mjoaexst	70.0
+mopkgaeo	48.0
+mvsmqlpg	64.0
+mwbmnjx 	70.0
+mxcopjrc	46.0
+mxxmvyhe	52.0
+mygodibl	62.0
+mzcajdoc	32.0
+oclswmkc	42.0
+ogxhnrl 	66.0
+ohfvsgjb	48.0
+ostnxkor	42.0
+pdawsgfo	64.0
+pqhbstzj	74.0
+ptadook 	68.0
+pvjvdexs	66.0
+qaahqrfx	40.0
+qjthvhwd	54.0
+qkjfoeap	42.0
+qojuqawy	70.0
+qqnklcvm	56.0
+qtdwidxn	58.0
+rjwzichd	52.0
+rllnpkgb	46.0
+rqkpnbye	42.0
+saeuioyh	46.0
+sbslffyg	56.0
+scsakhra	58.0
+shphlbxv	62.0
+sscrtlgv	44.0
+ssqseynq	30.0
+svapltlh	62.0
+sxnebroi	58.0
+szknsjt 	56.0
+tfpjabaf	76.0
+tfrcslbq	54.0
+txtmpjjq	64.0
+ubmhimzb	38.0
+ukewwxmi	38.0
+umnzgnxl	38.0
+uowdqass	24.0
+uvunwexu	48.0
+uyuvubza	60.0
+vbgbhmew	56.0
+vcmtdlgf	58.0
+vepgppul	54.0
+vhloemts	50.0
+vixmmyhw	74.0
+wgffmecc	50.0
+wmhyvknd	34.0
+wvhxzjyt	32.0
+wxyevvnd	52.0
+wziwgsuj	42.0
+xcgfrrmv	72.0
+xljbefpl	50.0
+xsgiboou	50.0
+xxiojzaa	32.0
+xydmquie	68.0
+yugripip	66.0
+yvsqqzno	56.0
+yzhposjt	60.0
+zducrato	74.0
+zjyglohw	20.0
+zlseqzkq	38.0
+zoljyiiu	70.0
+zpnszksi	72.0
+zvytmqn 	42.0
+zwhfkfmt	56.0
+zxbihams	58.0
+zxlnxbyg	40.0
+zzhruowx	64.0

@@ -4,11 +4,11 @@
 Requires two files. (1) The grading key, a matrix with point values for
 each answer deliminated by spaces, one row per question. Zeroes must be
 included. (2) The raw output from IT. Correctly handles blank answers
-("."). The Scantron key must be the first line (for verification),
-usually with uniqueID 00000000. Optionally, a scramble file can be
-specified to allow multiple forms to be handled. The scramble file is a
-simple matrix with columns of matching question numbers. It does have to
-include a column for Form 1 if it is being used.
+("."). An optional key Scantron can be included (with ID KEY_ID).
+Optionally, a scramble file can be specified to allow multiple forms to
+be handled. The scramble file is a simple matrix with columns of
+matching question numbers. It does have to include a column for Form 1
+if it is being used.
 
 """
 import numpy as np
@@ -16,7 +16,7 @@ import numpy as np
 # Top and bottom cutoffs for analysis of answers, as fraction. IT uses
 # 27% for some reason.
 ANALYSIS_THRESHOLD = 0.27
-
+KEY_ID = "00000000"
 
 def generate_responses_array(answers):
     """Takes the raw answers from the output and returns the student
@@ -133,6 +133,7 @@ def main(key_file_name, answers_file_name, title="Graded Exam",
     # 10+num_questions), because the Scantron system can append extra
     # characters.
     students = []
+    key_response = {} # Form with the key
     with open(answers_file_name) as answers_file:
         for line in answers_file:
             uniqueid = line[0:8]
@@ -144,10 +145,15 @@ def main(key_file_name, answers_file_name, title="Graded Exam",
                     line[10:10 + num_questions].replace("\n", ""))
             if scramble_file_name:
                 responses = descramble(responses, form_num, scramble)
-            students.append({'name': uniqueid, 'responses': responses, 
-                             'form': form_num})
+            if uniqueid == KEY_ID:
+                key_response = {'name': uniqueid, 'responses': responses,
+                                'form': form_num}
+            else:
+                students.append({'name': uniqueid, 'responses': responses, 
+                                 'form': form_num})
 
-    num_students = len(students[1:])
+
+    num_students = len(students)
     num_students_analysis = round(ANALYSIS_THRESHOLD * num_students)
 
     # Actually determines score for each student. Multiplies sets of
@@ -156,10 +162,16 @@ def main(key_file_name, answers_file_name, title="Graded Exam",
     for stu_num in range(len(students)):
         students[stu_num]['score'] = (students[stu_num]['responses'] * 
                                       ans_key).sum()
+    # Same for key.
+    if key_response:
+        key_response['score'] = (key_response['responses'] * ans_key).sum()
+
+    # The maximum possible score, determined from the key.
+    max_score = sum([ans_row.max() for ans_row in ans_key])
 
     # Generates a new array, students_sorted_grade, that is just sorted
-    # by grades. Does not include key (students[0]).
-    students_sorted_grade = sorted(students[1:], 
+    # by grades.
+    students_sorted_grade = sorted(students, 
                                    key=lambda s: s['score'], reverse=True)
 
     # Determines number of each response, by question, for all students,
@@ -174,14 +186,15 @@ def main(key_file_name, answers_file_name, title="Graded Exam",
                         for n in students_sorted_grade[-num_students_analysis:]) 
                         / num_students_analysis)
 
-    # List of all grades. Students only (key not included).
-    all_grades = [n['score'] for n in students[1:]]
+    # List of all grades. Students only.
+    all_grades = [s['score'] for s in students]
 
     # The score for the Scantron key, as a check to make sure it was
     # assessed properly.
-    max_score = students[0]['score']
-    print("\nCheck: the Scantron key (uniqueID = {}) scores {:.2f}.\n"
-        .format(students[0]['name'], max_score))
+    if key_response:
+        print("\nCheck: the Scantron key (uniqueID = {}) scores {:.2f} "\
+              "out of {:.2f}.\n".format(key_response['name'], 
+                    key_response['score'], max_score))
 
     # Variable output_text is the actual textual output of the function.
     output_text = ""
@@ -228,7 +241,7 @@ def main(key_file_name, answers_file_name, title="Graded Exam",
         output_text += "\n\n"
 
     # Actual student scores.
-    students_sorted_name = sorted(students[1:], key=lambda s: s['name'])
+    students_sorted_name = sorted(students, key=lambda s: s['name'])
     output_text += "\nStudent Scores\n"
     output_text += "{}\n".format("-" * 14)
     for student in students_sorted_name:
@@ -301,6 +314,3 @@ if __name__ == '__main__':
         for s in sorted(student_output):
             with open("{}_out.txt".format(s), 'w') as output_file:
                 output_file.write(student_output[s])
-    # else:
-    #     for s in sorted(student_output):
-    #         print(student_output[s])
