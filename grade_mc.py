@@ -63,7 +63,7 @@ def descramble(responses, formnum, scramble):
     """
     descrambled_responses = []
     for n in scramble[formnum]:
-        descrambled_responses.append(responses[n-1])
+        descrambled_responses.append(responses[int(n)-1])
 
     return np.array(descrambled_responses)
 
