@@ -304,15 +304,15 @@ if __name__ == '__main__':
     else:
         scramble_file = None
     title = input("Title for results: ")
-    output_filename = input("Output filename (blank for output to terminal): ")
+    output_filename = input("Output filename (blank to use title): ")
     output_individual_responses = input("Output individual"\
                                   " responses as uniqueID.txt (y/n)? ")
     output, student_output = main(key_file, raw_file, title, scramble_file)
-    if output_filename:
-        with open(output_filename, 'w') as output_file:
-            output_file.write(output)
-    else:
-        print(output)
+
+    if not output_filename:
+        output_filename = title + ".txt"
+    with open(output_filename, 'w') as output_file:
+        output_file.write(output)
 
     if output_individual_responses in ["y", "Y", "yes", "YES", "Yes"]:
         for s in sorted(student_output):
