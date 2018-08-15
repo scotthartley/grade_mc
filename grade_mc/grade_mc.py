@@ -25,7 +25,7 @@ def generate_responses_array(answers):
     Args:
         answers (string): A string in the format "010123120...".
 
-    Returns: 
+    Returns:
         An array of solutions, with "1" indicating the selected answer.
         For example, a row of [0,1,0,0,0] indicates an answer of B. This
         array yields the total score when multiplied by the key and
@@ -73,14 +73,14 @@ def convert_response_to_letter(response):
 
     """
     response_list = response.tolist()
-    
+
     if 1 in response_list:
         return chr(response_list.index(1) + 65)
     else:
         return "."
 
 
-def main(key_file_name, answers_file_name, title="Graded Exam", 
+def main(key_file_name, answers_file_name, title="Graded Exam",
          scramble_file_name=None):
     """Processes raw Scantron output and returns the grades and
     statistics.
@@ -149,7 +149,7 @@ def main(key_file_name, answers_file_name, title="Graded Exam",
                 key_response = {'name': uniqueid, 'responses': responses,
                                 'form': form_num}
             else:
-                students.append({'name': uniqueid, 'responses': responses, 
+                students.append({'name': uniqueid, 'responses': responses,
                                  'form': form_num})
 
 
@@ -160,7 +160,7 @@ def main(key_file_name, answers_file_name, title="Graded Exam",
     # responses by the key, then sums over whole array. Score is stored
     # as students[n]['score']
     for stu_num in range(len(students)):
-        students[stu_num]['score'] = (students[stu_num]['responses'] * 
+        students[stu_num]['score'] = (students[stu_num]['responses'] *
                                       ans_key).sum()
     # Same for key.
     if key_response:
@@ -171,19 +171,19 @@ def main(key_file_name, answers_file_name, title="Graded Exam",
 
     # Generates a new array, students_sorted_grade, that is just sorted
     # by grades.
-    students_sorted_grade = sorted(students, 
+    students_sorted_grade = sorted(students,
                                    key=lambda s: s['score'], reverse=True)
 
     # Determines number of each response, by question, for all students,
     # and for the top and bottom students in the class. Values are given
     # as fractions.
-    all_answers_frac = (sum(n['responses'] 
+    all_answers_frac = (sum(n['responses']
                         for n in students_sorted_grade[:]) / num_students)
-    top_answers_frac = (sum(n['responses'] 
-                        for n in students_sorted_grade[:num_students_analysis]) 
+    top_answers_frac = (sum(n['responses']
+                        for n in students_sorted_grade[:num_students_analysis])
                         / num_students_analysis)
-    bot_answers_frac = (sum(n['responses'] 
-                        for n in students_sorted_grade[-num_students_analysis:]) 
+    bot_answers_frac = (sum(n['responses']
+                        for n in students_sorted_grade[-num_students_analysis:])
                         / num_students_analysis)
 
     # List of all grades. Students only.
@@ -193,7 +193,7 @@ def main(key_file_name, answers_file_name, title="Graded Exam",
     # assessed properly.
     if key_response:
         print("\nCheck: the Scantron key (uniqueID = {}) scores {:.2f} "\
-              "out of {:.2f}.\n".format(key_response['name'], 
+              "out of {:.2f}.\n".format(key_response['name'],
                     key_response['score'], max_score))
 
     # Variable output_text is the actual textual output of the function.
@@ -205,8 +205,8 @@ def main(key_file_name, answers_file_name, title="Graded Exam",
     # The overall averages, max, and min.
     output_text += "   Overall average: {:.2f} "\
                    "out of {:.2f} points ({:.2%})\n".format(
-                    np.mean(all_grades), 
-                    max_score, 
+                    np.mean(all_grades),
+                    max_score,
                     np.mean(all_grades) / max_score)
     output_text += "Standard deviation: {:.2f}\n".format(np.std(all_grades))
     output_text += "              High: {}\n".format(max(all_grades))
@@ -245,7 +245,7 @@ def main(key_file_name, answers_file_name, title="Graded Exam",
     output_text += "\nStudent Scores\n"
     output_text += "{}\n".format("-" * 14)
     for student in students_sorted_name:
-        output_text += "{:8}\t{:.1f}\n".format(student['name'], 
+        output_text += "{:8}\t{:.1f}\n".format(student['name'],
                        student['score'])
 
     # Generate individual student output.
@@ -268,7 +268,7 @@ def main(key_file_name, answers_file_name, title="Graded Exam",
                     "      {}      {:1.2f}".format(
                     scramble[student['form']][n],
                     scramble[0][n],
-                    convert_response_to_letter(student['responses'][n]), 
+                    convert_response_to_letter(student['responses'][n]),
                     ans_key[n][student['responses'][n].tolist().index(1)]))
             else:
                 question_output.append("{:2.0f} ({:2.0f})"\
@@ -295,7 +295,7 @@ def main(key_file_name, answers_file_name, title="Graded Exam",
     return(output_text, student_output_text)
 
 
-if __name__ == '__main__':
+def process_grades():
     key_file = input("Filename for key: ")
     raw_file = input("Filename for student responses: ")
     is_scrambled = input("Are multiple forms used (y/n)? ")
