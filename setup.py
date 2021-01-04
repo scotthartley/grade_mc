@@ -7,7 +7,7 @@ def readme():
 
 
 setup(name="grade_mc",
-      version=1.0,
+      version='1.1',
       description=("Process multiple choice grades."),
       long_description=readme(),
       author="Scott Hartley",

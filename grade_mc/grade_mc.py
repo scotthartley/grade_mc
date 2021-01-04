@@ -12,6 +12,7 @@ if it is being used.
 
 """
 import numpy as np
+import argparse
 
 # Top and bottom cutoffs for analysis of answers, as fraction. IT uses
 # 27% for some reason.
@@ -296,25 +297,40 @@ def main(key_file_name, answers_file_name, title="Graded Exam",
 
 
 def process_grades():
-    key_file = input("Filename for key: ")
-    raw_file = input("Filename for student responses: ")
-    is_scrambled = input("Are multiple forms used (y/n)? ")
-    if is_scrambled in ["y", "Y", "yes", "YES", "Yes"]:
-        scramble_file = input("Filename for scramble: ")
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "key_file",
+        help="Filename for key")
+    parser.add_argument(
+        "raw_file",
+        help="Filename for student responses")
+    parser.add_argument(
+        "title",
+        help="Title for results")
+    parser.add_argument(
+        "-s", "--scramble_file",
+        help="Filename for multiple forms scramble")
+    parser.add_argument(
+        "-o", "--individual_output",
+        help="Output individual responses as uniqueID.txt",
+        action='store_true')
+    args = parser.parse_args()
+
+    key_file = args.key_file
+    raw_file = args.raw_file
+    title = args.title
+    output_filename = title + ".txt"
+    if args.scramble_file:
+        scramble_file = args.scramble_file
     else:
         scramble_file = None
-    title = input("Title for results: ")
-    output_filename = input("Output filename (blank to use title): ")
-    output_individual_responses = input("Output individual"\
-                                  " responses as uniqueID.txt (y/n)? ")
     output, student_output = main(key_file, raw_file, title, scramble_file)
 
-    if not output_filename:
-        output_filename = title + ".txt"
     with open(output_filename, 'w') as output_file:
         output_file.write(output)
 
-    if output_individual_responses in ["y", "Y", "yes", "YES", "Yes"]:
+    if args.individual_output:
         for s in sorted(student_output):
             with open("{}_out.txt".format(s), 'w') as output_file:
                 output_file.write(student_output[s])
