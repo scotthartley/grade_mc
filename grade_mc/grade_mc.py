@@ -21,7 +21,7 @@ ANALYSIS_THRESHOLD = 0.27
 ANSWERS = ["A", "B", "C", "D", "E"]
 NUM_ANSWERS = 5
 
-KEY_ID = "00000000"
+NON_ANSWER_ERROR = "Encountered unexpected student response."
 
 def generate_responses_array(answers):
     """Takes the raw answers from the output and returns the student
@@ -47,7 +47,7 @@ def generate_responses_array(answers):
                 answer_index = ANSWERS.index(answers[qnum])
                 response[answer_index] = 1
             except:
-                raise ValueError("Encountered unexpected student response.")
+                raise ValueError(NON_ANSWER_ERROR)
         responses.append(response)
     return np.array(responses)
 
@@ -142,7 +142,6 @@ def main(key_file_name, answers_file_name, title="Graded Exam",
     # 10+num_questions), because the Scantron system can append extra
     # characters.
     students = []
-    key_response = {} # Form with the key
     with open(answers_file_name) as answers_file:
         for line in answers_file:
             uniqueid = line[0:8]
@@ -154,12 +153,9 @@ def main(key_file_name, answers_file_name, title="Graded Exam",
                     line[10:10 + num_questions].replace("\n", ""))
             if scramble_file_name:
                 responses = descramble(responses, form_num, scramble)
-            if uniqueid == KEY_ID:
-                key_response = {'name': uniqueid, 'responses': responses,
-                                'form': form_num}
-            else:
-                students.append({'name': uniqueid, 'responses': responses,
-                                 'form': form_num})
+
+            students.append({'name': uniqueid, 'responses': responses,
+                             'form': form_num})
 
 
     num_students = len(students)
@@ -171,9 +167,6 @@ def main(key_file_name, answers_file_name, title="Graded Exam",
     for stu_num in range(len(students)):
         students[stu_num]['score'] = (students[stu_num]['responses'] *
                                       ans_key).sum()
-    # Same for key.
-    if key_response:
-        key_response['score'] = (key_response['responses'] * ans_key).sum()
 
     # The maximum possible score, determined from the key.
     max_score = sum([ans_row.max() for ans_row in ans_key])
@@ -197,13 +190,6 @@ def main(key_file_name, answers_file_name, title="Graded Exam",
 
     # List of all grades. Students only.
     all_grades = [s['score'] for s in students]
-
-    # The score for the Scantron key, as a check to make sure it was
-    # assessed properly.
-    if key_response:
-        print("\nCheck: the Scantron key (uniqueID = {}) scores {:.2f} "\
-              "out of {:.2f}.\n".format(key_response['name'],
-                    key_response['score'], max_score))
 
     # Variable output_text is the actual textual output of the function.
     output_text = ""
