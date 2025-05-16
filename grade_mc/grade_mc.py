@@ -17,6 +17,10 @@ import argparse
 # Top and bottom cutoffs for analysis of answers, as fraction. IT uses
 # 27% for some reason.
 ANALYSIS_THRESHOLD = 0.27
+
+ANSWERS = ["A", "B", "C", "D", "E"]
+NUM_ANSWERS = 5
+
 KEY_ID = "00000000"
 
 def generate_responses_array(answers):
@@ -35,11 +39,15 @@ def generate_responses_array(answers):
     """
     responses = []
     for qnum in range(len(answers)):
-        response = [0 for n in range(5)]
+        response = [0 for n in range(NUM_ANSWERS)]
         # Check if blank response, indicated by ".". If not, change
-        # list[answer] to 1.
+        # response[answer_index] to 1.
         if answers[qnum] != ".":
-            response[int(answers[qnum])] = 1
+            try:
+                answer_index = ANSWERS.index(answers[qnum])
+                response[answer_index] = 1
+            except:
+                raise ValueError("Encountered unexpected student response.")
         responses.append(response)
     return np.array(responses)
 
@@ -76,7 +84,7 @@ def convert_response_to_letter(response):
     response_list = response.tolist()
 
     if 1 in response_list:
-        return chr(response_list.index(1) + 65)
+        return ANSWERS[response_list.index(1)]
     else:
         return "."
 
