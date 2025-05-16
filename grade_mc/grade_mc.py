@@ -21,7 +21,8 @@ ANALYSIS_THRESHOLD = 0.27
 ANSWERS = ["A", "B", "C", "D", "E"]
 NUM_ANSWERS = 5
 
-NON_ANSWER_ERROR = "Encountered unexpected student response."
+NON_ANSWER_ERROR = "Encountered unexpected value in student response."
+
 
 def generate_responses_array(answers):
     """Takes the raw answers from the output and returns the student
