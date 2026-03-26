@@ -4,13 +4,13 @@
 Requires two files. (1) The grading key, a matrix with point values for
 each answer deliminated by spaces, one row per question. Zeroes must be
 included. (2) The raw output from IT. Correctly handles blank answers
-("."). An optional key Scantron can be included (with ID KEY_ID).
-Optionally, a scramble file can be specified to allow multiple forms to
-be handled. The scramble file is a simple matrix with columns of
+("."). Optionally, a scramble file can be specified to allow multiple
+forms to be handled. The scramble file is a simple matrix with columns of
 matching question numbers. It does have to include a column for Form 1
 if it is being used.
 
 """
+import os
 import numpy as np
 import argparse
 
@@ -29,7 +29,7 @@ def generate_responses_array(answers):
     solutions as an array with "1" indicating the selection.
 
     Args:
-        answers (string): A string in the format "010123120...".
+        answers (string): A string in the format "BCADA...".
 
     Returns:
         An array of solutions, with "1" indicating the selected answer.
@@ -38,19 +38,14 @@ def generate_responses_array(answers):
         summed.
 
     """
-    responses = []
-    for qnum in range(len(answers)):
-        response = [0 for n in range(NUM_ANSWERS)]
-        # Check if blank response, indicated by ".". If not, change
-        # response[answer_index] to 1.
-        if answers[qnum] != ".":
+    responses = np.zeros((len(answers), NUM_ANSWERS), dtype=int)
+    for i, answer in enumerate(answers):
+        if answer != ".":
             try:
-                answer_index = ANSWERS.index(answers[qnum])
-                response[answer_index] = 1
-            except:
+                responses[i, ANSWERS.index(answer)] = 1
+            except ValueError:
                 raise ValueError(NON_ANSWER_ERROR)
-        responses.append(response)
-    return np.array(responses)
+    return responses
 
 
 def descramble(responses, formnum, scramble):
@@ -82,10 +77,8 @@ def convert_response_to_letter(response):
     """Converts a grade (as a numpy array) to a letter grade string.
 
     """
-    response_list = response.tolist()
-
-    if 1 in response_list:
-        return ANSWERS[response_list.index(1)]
+    if response.any():
+        return ANSWERS[response.argmax()]
     else:
         return "."
 
@@ -131,8 +124,9 @@ def main(key_file_name, answers_file_name, title="Graded Exam",
     if scramble_file_name:
         with open(scramble_file_name) as scramble_file:
             scramble = np.loadtxt(scramble_file).transpose()
+        num_forms = len(scramble)
     else:
-        scramble = np.array([range(1,num_questions+1) for n in range(4)])
+        scramble = None
 
     # Load the student info. Characters 0-7 in the input file are the
     # student's uniqueID. Character 9 is the form number. Characters
@@ -151,16 +145,32 @@ def main(key_file_name, answers_file_name, title="Graded Exam",
             else:
                 form_num = int(line[9]) - 1
             responses = generate_responses_array(
-                    line[10:10 + num_questions].replace("\n", ""))
+                    line[10:10 + num_questions].rstrip("\r\n"))
             if scramble_file_name:
+                if form_num >= num_forms:
+                    raise ValueError(
+                        "Student {} is marked as form {}, but the scramble "
+                        "only has {} form(s).".format(
+                            uniqueid, form_num + 1, num_forms))
                 responses = descramble(responses, form_num, scramble)
 
             students.append({'name': uniqueid, 'responses': responses,
                              'form': form_num})
 
+    if not students:
+        raise ValueError(
+            "No students found in '{}'.".format(answers_file_name))
+
+    # Build default identity scramble after loading students (only used in
+    # individual output). Size covers the highest form number encountered.
+    if not scramble_file_name:
+        max_form = max(s['form'] for s in students)
+        scramble = np.array([range(1, num_questions + 1)
+                             for _ in range(max_form + 1)])
 
     num_students = len(students)
     num_students_analysis = round(ANALYSIS_THRESHOLD * num_students)
+    do_analysis = num_students_analysis > 0
 
     # Actually determines score for each student. Multiplies sets of
     # responses by the key, then sums over whole array. Score is stored
@@ -170,7 +180,7 @@ def main(key_file_name, answers_file_name, title="Graded Exam",
                                       ans_key).sum()
 
     # The maximum possible score, determined from the key.
-    max_score = sum([ans_row.max() for ans_row in ans_key])
+    max_score = ans_key.max(axis=1).sum()
 
     # Generates a new array, students_sorted_grade, that is just sorted
     # by grades.
@@ -181,13 +191,14 @@ def main(key_file_name, answers_file_name, title="Graded Exam",
     # and for the top and bottom students in the class. Values are given
     # as fractions.
     all_answers_frac = (sum(n['responses']
-                        for n in students_sorted_grade[:]) / num_students)
-    top_answers_frac = (sum(n['responses']
-                        for n in students_sorted_grade[:num_students_analysis])
-                        / num_students_analysis)
-    bot_answers_frac = (sum(n['responses']
-                        for n in students_sorted_grade[-num_students_analysis:])
-                        / num_students_analysis)
+                        for n in students_sorted_grade) / num_students)
+    if do_analysis:
+        top_answers_frac = (sum(n['responses']
+                            for n in students_sorted_grade[:num_students_analysis])
+                            / num_students_analysis)
+        bot_answers_frac = (sum(n['responses']
+                            for n in students_sorted_grade[-num_students_analysis:])
+                            / num_students_analysis)
 
     # List of all grades. Students only.
     all_grades = [s['score'] for s in students]
@@ -226,15 +237,18 @@ def main(key_file_name, answers_file_name, title="Graded Exam",
         output_text += "\n            Frequency:  "
         for m in range(len(all_answers_frac[n])):
             output_text += "{:5.1f}   ".format(all_answers_frac[n][m] * 100)
-        output_text += "(%)\n              Top {:2.0f}%:  ".format(
-                       ANALYSIS_THRESHOLD * 100)
-        for m in range(len(top_answers_frac[n])):
-            output_text += "{:5.1f}   ".format(top_answers_frac[n][m] * 100)
-        output_text += "\n              Bot {:2.0f}%:  ".format(
-                       ANALYSIS_THRESHOLD * 100)
-        for m in range(len(bot_answers_frac[n])):
-            output_text += "{:5.1f}   ".format(bot_answers_frac[n][m] * 100)
-        output_text += "\n\n"
+        output_text += "(%)\n"
+        if do_analysis:
+            output_text += "              Top {:2.0f}%:  ".format(
+                           ANALYSIS_THRESHOLD * 100)
+            for m in range(len(top_answers_frac[n])):
+                output_text += "{:5.1f}   ".format(top_answers_frac[n][m] * 100)
+            output_text += "\n              Bot {:2.0f}%:  ".format(
+                           ANALYSIS_THRESHOLD * 100)
+            for m in range(len(bot_answers_frac[n])):
+                output_text += "{:5.1f}   ".format(bot_answers_frac[n][m] * 100)
+            output_text += "\n"
+        output_text += "\n"
 
     # Actual student scores.
     students_sorted_name = sorted(students, key=lambda s: s['name'])
@@ -259,13 +273,13 @@ def main(key_file_name, answers_file_name, title="Graded Exam",
         # wrong order.
         question_output = []
         for n in range(num_questions):
-            if 1 in student['responses'][n]:
+            if student['responses'][n].any():
                 question_output.append("{:2.0f} ({:2.0f})"\
                     "      {}      {:1.2f}".format(
                     scramble[student['form']][n],
                     scramble[0][n],
                     convert_response_to_letter(student['responses'][n]),
-                    ans_key[n][student['responses'][n].tolist().index(1)]))
+                    ans_key[n][int(student['responses'][n].argmax())]))
             else:
                 question_output.append("{:2.0f} ({:2.0f})"\
                     "    {}    {:1.2f}".format(
@@ -315,13 +329,13 @@ def process_grades():
     key_file = args.key_file
     raw_file = args.raw_file
     title = args.title
-    output_filename = title + ".txt"
-    if args.scramble_file:
-        scramble_file = args.scramble_file
-    else:
-        scramble_file = None
+    safe_title = title.replace("/", "_").replace("\\", "_")
+    output_filename = safe_title + ".txt"
+    scramble_file = args.scramble_file
     output, student_output = main(key_file, raw_file, title, scramble_file)
 
+    if os.path.exists(output_filename):
+        print("Warning: overwriting existing file '{}'.".format(output_filename))
     with open(output_filename, 'w') as output_file:
         output_file.write(output)
 
